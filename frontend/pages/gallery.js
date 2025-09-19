@@ -11,16 +11,28 @@ export default function Gallery() {
   useEffect(() => {
     fetch(`${API_BASE}/api/products`)
       .then(r => r.json())
-      .then(setItems)
+      .then(data => {
+        const mapped = data.map(p => ({
+          ...p,
+          status: p.stock === 0 ? 'sold_out' : (p.stock <= 2 ? 'low_stock' : 'available')
+        }));
+        setItems(mapped);
+      })
       .catch(console.error);
   }, []);
 
   return (
-    <main style={{padding: '2rem'}}>
-      <h2>Gallery</h2>
+    <main className="container py-12">
+      <h2 className="text-2xl font-semibold text-[var(--brand)] mb-6">Gallery</h2>
       <GalleryGrid>
         {items.map(p => (
-          <ProductCard key={p.id} id={p.id} title={p.title} price={p.price} />
+          <ProductCard
+            key={p.id}
+            id={p.id}
+            title={p.title}
+            price={p.price}
+            status={p.status}
+          />
         ))}
       </GalleryGrid>
     </main>

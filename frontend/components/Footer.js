@@ -1,8 +1,10 @@
 // components/Footer.js
 export default function Footer() {
     return (
-      <footer style={{padding:'1rem', borderTop:'1px solid #eee', textAlign:'center'}}>
-        <small>© {new Date().getFullYear()} MBDCreations</small>
+      <footer className="border-t bg-white">
+        <div className="container py-8 text-center text-sm text-gray-600">
+          © {new Date().getFullYear()} MBDCreations
+        </div>
       </footer>
     );
   }

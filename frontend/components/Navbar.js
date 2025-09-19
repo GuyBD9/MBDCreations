@@ -3,14 +3,14 @@ import Link from 'next/link';
 
 export default function Navbar() {
   return (
-    <nav style={{
-      padding:'1rem',
-      borderBottom:'1px solid #eee',
-      display:'flex',
-      gap:'1rem'
-    }}>
-      <Link href="/">Home</Link>
-      <Link href="/gallery">Gallery</Link>
+    <nav className="border-b bg-white">
+      <div className="container py-3 flex items-center gap-4">
+        <Link href="/" className="text-xl font-semibold text-[var(--brand)]">MBDCreations</Link>
+        <div className="ms-auto flex items-center gap-4">
+          <Link href="/" className="text-gray-700 hover:text-black">Home</Link>
+          <Link href="/gallery" className="text-gray-700 hover:text-black">Gallery</Link>
+        </div>
+      </div>
     </nav>
   );
 }

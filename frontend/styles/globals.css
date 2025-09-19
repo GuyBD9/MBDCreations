@@ -1,0 +1,34 @@
+@import "tailwindcss";
+
+/* Design tokens */
+:root {
+  /* brand */
+  --brand: #111827;       /* near-black for headings */
+  --brand-2: #4b5563;     /* gray for body text */
+  --accent: #0ea5e9;      /* sky-500 */
+  --accent-contrast: #ffffff;
+
+  /* surface */
+  --bg: #ffffff;
+  --card: #f8fafc;        /* slate-50 */
+  --border: #e5e7eb;      /* gray-200 */
+
+  /* radius & shadow */
+  --radius: 16px;
+  --shadow: 0 6px 20px rgba(17, 24, 39, 0.08);
+}
+
+/* Base LTR and base look */
+html { direction: ltr; }
+body {
+  background: var(--bg);
+  color: var(--brand-2);
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, Noto Sans, "Apple Color Emoji","Segoe UI Emoji";
+}
+
+/* Helpers */
+.container { max-width: 72rem; margin-inline: auto; padding-inline: 1rem; }
+.card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); }
+
+/* Focus visible for a11y */
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }

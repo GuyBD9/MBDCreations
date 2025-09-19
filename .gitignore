@@ -1,0 +1,19 @@
+# Node
+node_modules/
+npm-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+.next/
+out/
+
+# macOS
+.DS_Store
+
+# Env
+.env
+.env.*
+frontend/.env.local
+
+# Database
+database/*.sqlite
+database/*.db

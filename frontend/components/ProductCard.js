@@ -1,8 +1,15 @@
 // components/ProductCard.js
 import Link from 'next/link';
+import Image from 'next/image';
 import Badge from './Badge';
 
-export default function ProductCard({ id, title = "Untitled", price = null, status = "available", imageUrl }) {
+export default function ProductCard({
+  id,
+  title = "Untitled",
+  price = null,
+  status = "available",
+  imageUrl
+}) {
   const badge = {
     available: null,
     drop_soon: <Badge tone="warning">DROP SOON</Badge>,
@@ -11,20 +18,33 @@ export default function ProductCard({ id, title = "Untitled", price = null, stat
   }[status];
 
   return (
-    <div className="relative overflow-hidden rounded-2xl border hover:shadow-xl transition-shadow bg-white">
-      <div className="relative aspect-[4/3] bg-gray-200">
-        {/* If you later use next/image, replace with <Image ... fill /> */}
-        {imageUrl ? (
-          <img src={imageUrl} alt={title} className="absolute inset-0 w-full h-full object-cover" />
-        ) : null}
+    <div className="relative overflow-hidden rounded-2xl border bg-white hover:shadow-xl transition-shadow">
+      {/* Frame with fixed aspect ratio (4:3) */}
+      <div className="relative w-full" style={{ paddingTop: '75%' }}>
+        {/* Fallback צבע אם אין תמונה */}
+        {!imageUrl && (
+          <div className="absolute inset-0 bg-gradient-to-br from-gray-200 to-gray-300" />
+        )}
+        {/* Image cover */}
+        {imageUrl && (
+          <Image
+            src={imageUrl}
+            alt={title}
+            fill
+            className="object-cover"
+            sizes="(max-width: 768px) 100vw, 33vw"
+            priority={false}
+          />
+        )}
         <div className="absolute top-3 left-3">{badge}</div>
-        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
       </div>
 
       <div className="p-4 flex items-center gap-3">
-        <div className="font-medium text-[var(--brand)]">{title}</div>
-        {price !== null && (
-          <div className="ms-auto text-gray-700">₪ {(price / 100).toFixed(2)}</div>
+        <div className="font-medium text-[var(--brand)] truncate">{title}</div>
+        {typeof price === 'number' && (
+          <div className="ms-auto text-gray-700 whitespace-nowrap">
+            ₪ {(price / 100).toFixed(2)}
+          </div>
         )}
       </div>
 

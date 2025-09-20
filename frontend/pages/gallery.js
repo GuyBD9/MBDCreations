@@ -12,9 +12,16 @@ export default function Gallery() {
     fetch(`${API_BASE}/api/products`)
       .then(r => r.json())
       .then(data => {
-        const mapped = data.map(p => ({
+        const mapped = data.map((p, idx) => ({
           ...p,
-          status: p.stock === 0 ? 'sold_out' : (p.stock <= 2 ? 'low_stock' : 'available')
+          status: p.stock === 0
+            ? 'sold_out'
+            : p.stock <= 2
+              ? 'low_stock'
+              : 'available',
+          imageUrl: p.images && p.images.length > 0
+            ? p.images[0]
+            : `https://picsum.photos/seed/mbd-${p.id || idx}/1200/900`
         }));
         setItems(mapped);
       })
@@ -27,11 +34,12 @@ export default function Gallery() {
       <GalleryGrid>
         {items.map(p => (
           <ProductCard
-            key={p.id}
+            key={p.id || `item-${Math.random()}`}
             id={p.id}
             title={p.title}
             price={p.price}
             status={p.status}
+            imageUrl={p.imageUrl}
           />
         ))}
       </GalleryGrid>

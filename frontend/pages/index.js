@@ -1,64 +1,74 @@
+// frontend/pages/index.js
 import Head from 'next/head';
-import Hero from '../components/Hero';
-import GalleryGrid from '../components/GalleryGrid';
-import ProductCard from '../components/ProductCard';
+import Image from 'next/image';
+import Link from 'next/link';
+import Countdown from '../components/Countdown';
+import FeaturedWorksGrid from '../components/FeaturedWorksGrid'; // Step 1: Import the new component
+import { workApiService } from '../services/api';
 
-const HIGHLIGHTED_WORKS = [
-  {
-    id: null,
-    title: 'Aureate Vessel',
-    price: 32000,
-    status: 'available',
-    imageUrl: 'https://images.unsplash.com/photo-1520975682031-0f3c583eac91?auto=format&fit=crop&w=1600&q=80&ixlib=rb-4.0.3',
-  },
-  {
-    id: null,
-    title: 'Silence Table',
-    price: 125000,
-    status: 'drop_soon',
-    imageUrl: 'https://images.unsplash.com/photo-1484318571209-661cf29a69c3?auto=format&fit=crop&w=1600&q=80&ixlib=rb-4.0.3',
-  },
-  {
-    id: null,
-    title: 'Stoneware Study',
-    price: 58000,
-    status: 'sold_out',
-    imageUrl: 'https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=1600&q=80&ixlib=rb-4.0.3',
-  },
-];
+// Step 2: The component now receives `allWorks` as a prop
+export default function Home({ featuredWork, allWorks }) {
 
-export default function Home() {
-  const nextDropTarget = new Date(Date.now() + 1000 * 60 * 60 * 48).toISOString();
+  // Fallback data for the hero section
+  const work = featuredWork || {
+    title: 'Vessel of Light',
+    subtitle: 'Sculptural Table Lamp',
+    imageUrl: 'https://images.unsplash.com/photo-1543198113-f7c21087d2da?q=80&w=2187&auto=format&fit=crop',
+    drop_start_at: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toISOString()
+  };
 
   return (
     <>
       <Head>
-        <title>MBDCreations — Minimal works & limited drops</title>
-        <meta
-          name="description"
-          content="MBDCreations showcases minimalist works, limited drops, and considered objects."
-        />
+        <title>MBDCreations - Contemporary Design Objects</title>
+        <meta name="description" content="Israeli contemporary design brand combining local materials into unique, functional art objects." />
       </Head>
 
-      <Hero
-        title="Considered works for contemporary spaces"
-        subtitle="Furniture and objects arriving in limited, time-boxed drops."
-        target={nextDropTarget}
-      />
-
-      <section className="container py-16">
-        <header className="mb-8 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-          <div>
-            <h2 className="text-2xl font-semibold text-[var(--brand)]">Highlighted Works</h2>
-            <p className="text-sm text-[var(--brand-2)]">A glimpse into the next release.</p>
+      {/* Hero Section */}
+      <section className="relative h-[90vh] min-h-[600px] w-full flex items-center justify-center text-white">
+        <Image
+          src={work.imageUrl}
+          alt={`Hero image featuring ${work.title}`}
+          fill
+          className="object-cover z-0"
+          quality={85}
+          priority
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent z-10"></div>
+        
+        <div className="relative z-20 text-center p-8">
+          {work.is_drop && work.drop_start_at && <Countdown targetDate={work.drop_start_at} />}
+          <h1 className="text-4xl md:text-6xl font-serif mb-4 mt-2">{work.title}</h1>
+          <p className="text-lg md:text-xl max-w-xl mx-auto mb-8">{work.subtitle}</p>
+          <div className="flex justify-center gap-4">
+            <Link href="/works" className="inline-block bg-white text-black px-8 py-3 font-medium hover:bg-secondary transition-colors duration-300">
+              Explore The Collection
+            </Link>
+            <Link href="/about" className="inline-block bg-transparent border border-white text-white px-8 py-3 font-medium hover:bg-white hover:text-black transition-colors duration-300">
+              About The Studio
+            </Link>
           </div>
-        </header>
-        <GalleryGrid>
-          {HIGHLIGHTED_WORKS.map((work) => (
-            <ProductCard key={work.title} {...work} />
-          ))}
-        </GalleryGrid>
+        </div>
       </section>
+
+      {/* Step 3: Add the new component right after the hero section */}
+      <FeaturedWorksGrid works={allWorks} />
     </>
   );
+}
+
+// This function is already correct and fetches all the necessary data.
+export async function getStaticProps() {
+  const [featuredWork, allWorks] = await Promise.all([
+    workApiService.getFeaturedWork(),
+    workApiService.getAllWorks()
+  ]);
+  
+  return {
+    props: { 
+      featuredWork,
+      allWorks: allWorks || [],
+    },
+    revalidate: 60,
+  };
 }

@@ -1,62 +1,54 @@
+// frontend/pages/drops.js
 import Head from 'next/head';
 import Countdown from '../components/Countdown';
+import { workApiService } from '../services/api';
 
-const releaseNotes = [
-  {
-    title: 'Aureate Vessel',
-    detail: 'Hand-lathed brass vessel with matte lacquer interior. Limited to 40 units.',
-  },
-  {
-    title: 'Lines Study Bench',
-    detail: 'Ash bench finished in natural oil with dovetail joinery. Edition of 25.',
-  },
-  {
-    title: 'Stoneware Triptych',
-    detail: 'Three-piece ceramic set exploring texture contrast. Edition of 15.',
-  },
-];
-
-export default function Drops() {
-  const dropOpensAt = new Date(Date.now() + 1000 * 60 * 60 * 36).toISOString();
+// This is the component for the drops page.
+export default function DropsPage({ nextDrop }) {
+  const hasDrop = Boolean(nextDrop);
 
   return (
     <>
       <Head>
-        <title>Upcoming Drops — MBDCreations</title>
-        <meta name="description" content="Countdown and release notes for the upcoming MBDCreations drop." />
+        <title>Drops - MBDCreations</title>
+        <meta name="description" content="Upcoming limited edition releases from MBDCreations." />
       </Head>
 
-      <section className="relative overflow-hidden bg-[var(--brand)] text-white">
-        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1455587734955-081b22074882?auto=format&fit=crop&w=1600&q=80&ixlib=rb-4.0.3')] bg-cover bg-center opacity-40" aria-hidden="true" />
-        <div className="absolute inset-0 bg-gradient-to-br from-black/70 via-black/40 to-black/70" aria-hidden="true" />
+      <div className="container mx-auto px-4 py-20 text-center">
+        <h1 className="text-4xl font-serif mb-4">Limited Drops</h1>
+        <p className="text-lg max-w-2xl mx-auto text-foreground/70 mb-12">
+          Exclusive releases of unique objects, available for a limited time.
+        </p>
 
-        <div className="relative container py-24 text-center">
-          <p className="text-xs uppercase tracking-[0.4em] text-white/60">Next Limited Release</p>
-          <h1 className="mt-4 text-4xl font-semibold sm:text-6xl">Drop opens soon</h1>
-          <p className="mx-auto mt-4 max-w-2xl text-base text-white/80 sm:text-lg">
-            The next batch goes live once the countdown ends. Quantities are intentionally limited to keep every piece special.
-          </p>
-          <div className="mt-8 inline-flex items-center gap-4 rounded-full bg-white/10 px-6 py-3 text-sm backdrop-blur">
-            <span className="uppercase tracking-[0.3em] text-white/70">Opens in</span>
-            <Countdown target={dropOpensAt} />
+        {/* Conditionally render based on whether a drop was found */}
+        {hasDrop ? (
+          <div className="max-w-3xl mx-auto border border-secondary p-8 md:p-12">
+            <h2 className="text-2xl font-serif mb-2">Next Release: {nextDrop.title}</h2>
+            <p className="text-foreground/80 mb-6">{nextDrop.subtitle}</p>
+            <Countdown targetDate={nextDrop.drop_start_at} />
+            <p className="mt-8 text-sm text-foreground/60">
+              Be ready. Once the countdown ends, this piece will be available for purchase.
+            </p>
           </div>
-        </div>
-      </section>
-
-      <section className="container py-16">
-        <div className="mb-8 space-y-2">
-          <h2 className="text-2xl font-semibold text-[var(--brand)]">Release Notes</h2>
-          <p className="text-sm text-[var(--brand-2)]">Get familiar with the works arriving in the next window.</p>
-        </div>
-        <div className="space-y-6">
-          {releaseNotes.map((item) => (
-            <article key={item.title} className="rounded-[var(--radius)] border border-[var(--border)] bg-white p-6 shadow-sm">
-              <h3 className="text-lg font-semibold text-[var(--brand)]">{item.title}</h3>
-              <p className="mt-2 text-sm text-[var(--brand-2)]">{item.detail}</p>
-            </article>
-          ))}
-        </div>
-      </section>
+        ) : (
+          <div className="max-w-3xl mx-auto border border-secondary p-8 md:p-12">
+            <h2 className="text-2xl font-serif mb-2">No Upcoming Drops</h2>
+            <p className="text-foreground/80">
+              Check back soon for future releases.
+            </p>
+          </div>
+        )}
+      </div>
     </>
   );
+}
+
+// Fetch data on the server before rendering the page.
+export async function getStaticProps() {
+  const nextDrop = await workApiService.getNextDrop();
+
+  return {
+    props: { nextDrop },
+    revalidate: 60, // Re-check for new drops every 60 seconds
+  };
 }

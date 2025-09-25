@@ -1,15 +1,17 @@
-
 {
   "name": "mbdcreations-backend",
-  "private": true,
+  "version": "1.0.0",
+  "description": "Backend API for MBDCreations",
+  "main": "server.js",
+  "type": "module",
   "scripts": {
-    "dev": "node server.js"
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "db:seed": "node seed.js"
   },
   "dependencies": {
-    "better-sqlite3": "^9.4.0",
+    "better-sqlite3": "^11.1.2",
     "cors": "^2.8.5",
     "express": "^4.19.2"
   }
 }
-
-

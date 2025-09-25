@@ -16,7 +16,8 @@
   "bugs": {
     "url": "https://github.com/GuyBD9/MBDCreations/issues"
   },
-  "homepage": "https://github.com/GuyBD9/MBDCreations#readme"
+  "homepage": "https://github.com/GuyBD9/MBDCreations#readme",
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.13"
+  }
 }
-
-

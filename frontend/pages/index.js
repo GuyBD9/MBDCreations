@@ -1,34 +1,61 @@
-// pages/index.js
 import Head from 'next/head';
 import Hero from '../components/Hero';
 import GalleryGrid from '../components/GalleryGrid';
 import ProductCard from '../components/ProductCard';
 
+const HIGHLIGHTED_WORKS = [
+  {
+    id: null,
+    title: 'Aureate Vessel',
+    price: 32000,
+    status: 'available',
+    imageUrl: 'https://images.unsplash.com/photo-1520975682031-0f3c583eac91?auto=format&fit=crop&w=1600&q=80&ixlib=rb-4.0.3',
+  },
+  {
+    id: null,
+    title: 'Silence Table',
+    price: 125000,
+    status: 'drop_soon',
+    imageUrl: 'https://images.unsplash.com/photo-1484318571209-661cf29a69c3?auto=format&fit=crop&w=1600&q=80&ixlib=rb-4.0.3',
+  },
+  {
+    id: null,
+    title: 'Stoneware Study',
+    price: 58000,
+    status: 'sold_out',
+    imageUrl: 'https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=1600&q=80&ixlib=rb-4.0.3',
+  },
+];
+
 export default function Home() {
-  const demo = [
-    { id: 1, title: 'Sample Cup',   price: 12000, status: 'available', imageUrl: 'https://images.unsplash.com/photo-1520975682031-0f3c583eac91?q=80&w=1200&auto=format&fit=crop' },
-    { id: null, title: 'Art Table',  price: 95000, status: 'drop_soon', imageUrl: 'https://images.unsplash.com/photo-1484318571209-661cf29a69c3?q=80&w=1200&auto=format&fit=crop' },
-    { id: null, title: 'Sculpted Mug', price: 18000, status: 'sold_out', imageUrl: 'https://images.unsplash.com/photo-1512436991641-6745cdb1723f?q=80&w=1200&auto=format&fit=crop' }
-  ];
+  const nextDropTarget = new Date(Date.now() + 1000 * 60 * 60 * 48).toISOString();
 
   return (
     <>
       <Head>
-        <title>MBDCreations — Artistic Objects & Limited Drops</title>
-        <meta name="description" content="MBDCreations showcases artistic furniture & objects with limited drops." />
+        <title>MBDCreations — Minimal works & limited drops</title>
+        <meta
+          name="description"
+          content="MBDCreations showcases minimalist works, limited drops, and considered objects."
+        />
       </Head>
 
       <Hero
-        title="MBDCreations"
-        subtitle="Limited Drops • Artistic Furniture & Objects"
-        target={new Date(Date.now() + 1000 * 60 * 60 * 48).toISOString()}
+        title="Considered works for contemporary spaces"
+        subtitle="Furniture and objects arriving in limited, time-boxed drops."
+        target={nextDropTarget}
       />
 
-      <section className="container py-12">
-        <h2 className="text-2xl font-semibold text-[var(--brand)] mb-6">Featured Works</h2>
+      <section className="container py-16">
+        <header className="mb-8 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <h2 className="text-2xl font-semibold text-[var(--brand)]">Highlighted Works</h2>
+            <p className="text-sm text-[var(--brand-2)]">A glimpse into the next release.</p>
+          </div>
+        </header>
         <GalleryGrid>
-          {demo.map((p, i) => (
-            <ProductCard key={i} {...p} />
+          {HIGHLIGHTED_WORKS.map((work) => (
+            <ProductCard key={work.title} {...work} />
           ))}
         </GalleryGrid>
       </section>

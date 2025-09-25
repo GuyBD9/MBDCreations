@@ -1,36 +1,38 @@
-// components/Countdown.js
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
-function format(ms) {
-  const s = Math.max(0, Math.floor(ms / 1000));
-  const hrs = String(Math.floor(s / 3600)).padStart(2, '0');
-  const mins = String(Math.floor((s % 3600) / 60)).padStart(2, '0');
-  const secs = String(s % 60).padStart(2, '0');
-  return `${hrs}:${mins}:${secs}`;
+function formatDuration(ms) {
+  const totalSeconds = Math.max(0, Math.floor(ms / 1000));
+  const hours = String(Math.floor(totalSeconds / 3600)).padStart(2, '0');
+  const minutes = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, '0');
+  const seconds = String(totalSeconds % 60).padStart(2, '0');
+  return `${hours}:${minutes}:${seconds}`;
 }
 
 export default function Countdown({ target }) {
-  // Render a stable placeholder during SSR to prevent hydration mismatch
-  const [mounted, setMounted] = useState(false);
-  const [left, setLeft] = useState(0);
+  const targetTime = useMemo(() => new Date(target).getTime(), [target]);
+  const [isMounted, setIsMounted] = useState(false);
+  const [timeLeft, setTimeLeft] = useState('--:--:--');
 
   useEffect(() => {
-    setMounted(true);
+    setIsMounted(true);
   }, []);
 
   useEffect(() => {
-    if (!mounted) return;
-    const update = () => setLeft(Math.max(0, new Date(target) - Date.now()));
-    update(); // compute immediately after mount
-    const id = setInterval(update, 1000);
-    return () => clearInterval(id);
-  }, [target, mounted]);
+    if (!isMounted || Number.isNaN(targetTime)) return;
 
-  const display = mounted ? format(left) : '--:--:--';
+    const update = () => {
+      const remaining = targetTime - Date.now();
+      setTimeLeft(formatDuration(remaining));
+    };
+
+    update();
+    const interval = window.setInterval(update, 1000);
+    return () => window.clearInterval(interval);
+  }, [isMounted, targetTime]);
 
   return (
-    <div className="font-mono text-2xl sm:text-3xl" suppressHydrationWarning>
-      {display}
-    </div>
+    <span className="font-mono text-lg sm:text-xl" suppressHydrationWarning>
+      {isMounted ? timeLeft : '--:--:--'}
+    </span>
   );
 }

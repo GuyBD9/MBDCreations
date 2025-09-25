@@ -1,89 +1,58 @@
 @import "tailwindcss";
 
-/* ========================
-   🎨 Design tokens
-   ======================== */
 :root {
-  /* brand */
-  --brand: #111827;       /* near-black for headings */
-  --brand-2: #4b5563;     /* gray for body text */
-  --accent: #0ea5e9;      /* sky-500 */
+  --brand: #111827;
+  --brand-2: #4b5563;
+  --accent: #0ea5e9;
   --accent-contrast: #ffffff;
-
-  /* surface */
   --bg: #ffffff;
-  --bg-alt: #f9fafb;      /* subtle alt background */
-  --card: #f8fafc;        /* slate-50 */
-  --border: #e5e7eb;      /* gray-200 */
-
-  /* radius & shadow */
-  --radius-sm: 8px;
+  --bg-alt: #f9fafb;
+  --card: #f8fafc;
+  --border: #e5e7eb;
   --radius: 16px;
-  --shadow-sm: 0 2px 8px rgba(17, 24, 39, 0.06);
-  --shadow: 0 6px 20px rgba(17, 24, 39, 0.08);
-  --shadow-lg: 0 12px 28px rgba(17, 24, 39, 0.12);
+  --radius-sm: 8px;
+  --shadow-sm: 0 6px 16px rgba(17, 24, 39, 0.06);
+  --shadow: 0 12px 32px rgba(17, 24, 39, 0.12);
 }
 
-/* ========================
-   🌐 Base styles
-   ======================== */
-html { direction: ltr; scroll-behavior: smooth; }
+html {
+  direction: ltr;
+  scroll-behavior: smooth;
+}
+
 body {
   background: var(--bg);
   color: var(--brand-2);
-  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, Noto Sans, "Apple Color Emoji","Segoe UI Emoji";
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, "Noto Sans", sans-serif;
   line-height: 1.6;
 }
 
-/* ========================
-   📦 Layout helpers
-   ======================== */
+main {
+  width: 100%;
+}
+
 .container {
   max-width: 72rem;
   margin-inline: auto;
   padding-inline: 1rem;
 }
 
-.section {
-  padding-block: 3rem;
-}
-.section-title {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: var(--brand);
-  margin-bottom: 1.5rem;
-}
-
-/* ========================
-   🪪 Cards
-   ======================== */
-.card {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow-sm);
-  transition: box-shadow 0.2s ease, transform 0.2s ease;
-}
-.card:hover {
-  box-shadow: var(--shadow-lg);
-  transform: translateY(-2px);
-}
-
-/* ========================
-   🔗 Links
-   ======================== */
 a {
-  color: var(--accent);
+  color: inherit;
   text-decoration: none;
-  transition: color 0.2s ease;
-}
-a:hover {
-  color: #0284c7; /* sky-600 */
 }
 
-/* ========================
-   ♿ Accessibility
-   ======================== */
+a:hover {
+  color: var(--brand);
+}
+
+.card {
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--card);
+  box-shadow: var(--shadow-sm);
+}
+
 :focus-visible {
   outline: 3px solid var(--accent);
   outline-offset: 2px;

@@ -1,56 +1,56 @@
-// components/ProductCard.js
 import Link from 'next/link';
 import Image from 'next/image';
 import Badge from './Badge';
 
+const BADGES = {
+  drop_soon: { tone: 'warning', label: 'DROP SOON' },
+  sold_out: { tone: 'danger', label: 'SOLD OUT' },
+  low_stock: { tone: 'warning', label: 'LOW STOCK' },
+};
+
 export default function ProductCard({
   id,
-  title = "Untitled",
-  price = null,
-  status = "available",
-  imageUrl
+  title = 'Untitled Work',
+  price,
+  status = 'available',
+  imageUrl,
 }) {
-  const badge = {
-    available: null,
-    drop_soon: <Badge tone="warning">DROP SOON</Badge>,
-    sold_out: <Badge tone="danger">SOLD OUT</Badge>,
-    low_stock: <Badge tone="warning">LOW STOCK</Badge>
-  }[status];
+  const badgeConfig = BADGES[status];
+  const formattedPrice =
+    typeof price === 'number'
+      ? new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(price / 100)
+      : null;
 
   return (
-    <div className="relative overflow-hidden rounded-2xl border bg-white hover:shadow-xl transition-shadow">
-      {/* Frame with fixed aspect ratio (4:3) */}
-      <div className="relative w-full" style={{ paddingTop: '75%' }}>
-        {/* Fallback צבע אם אין תמונה */}
-        {!imageUrl && (
-          <div className="absolute inset-0 bg-gradient-to-br from-gray-200 to-gray-300" />
-        )}
-        {/* Image cover */}
-        {imageUrl && (
+    <article className="group relative overflow-hidden rounded-[var(--radius)] border border-[var(--border)] bg-white shadow-sm transition hover:shadow-lg">
+      <div className="relative aspect-[4/3] bg-gradient-to-br from-slate-200 to-slate-300">
+        {imageUrl ? (
           <Image
             src={imageUrl}
             alt={title}
             fill
-            className="object-cover"
-            sizes="(max-width: 768px) 100vw, 33vw"
+            className="object-cover transition duration-500 group-hover:scale-105"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             priority={false}
           />
-        )}
-        <div className="absolute top-3 left-3">{badge}</div>
-      </div>
-
-      <div className="p-4 flex items-center gap-3">
-        <div className="font-medium text-[var(--brand)] truncate">{title}</div>
-        {typeof price === 'number' && (
-          <div className="ms-auto text-gray-700 whitespace-nowrap">
-            ₪ {(price / 100).toFixed(2)}
+        ) : null}
+        {badgeConfig ? (
+          <div className="absolute left-4 top-4">
+            <Badge tone={badgeConfig.tone}>{badgeConfig.label}</Badge>
           </div>
-        )}
+        ) : null}
       </div>
-
-      {id && (
-        <Link href={`/product/${id}`} className="absolute inset-0" aria-label={`View ${title}`} />
-      )}
-    </div>
+      <div className="flex items-center gap-3 px-5 py-4">
+        <h3 className="truncate text-base font-semibold text-[var(--brand)]">{title}</h3>
+        {formattedPrice ? (
+          <span className="ml-auto text-sm text-[var(--brand-2)]">{formattedPrice}</span>
+        ) : null}
+      </div>
+      {id ? (
+        <Link href={`/product/${id}`} className="absolute inset-0" aria-label={`View ${title}`}>
+          <span className="sr-only">View {title}</span>
+        </Link>
+      ) : null}
+    </article>
   );
 }

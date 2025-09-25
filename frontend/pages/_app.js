@@ -2,13 +2,13 @@ import '../styles/globals.css';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 
-export default function MyApp({ Component, pageProps }) {
+export default function App({ Component, pageProps }) {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="flex min-h-screen flex-col bg-[var(--bg)]">
       <Navbar />
-      <div className="flex-1">
+      <main className="flex-1">
         <Component {...pageProps} />
-      </div>
+      </main>
       <Footer />
     </div>
   );

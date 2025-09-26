@@ -8,7 +8,7 @@ module.exports = {
   ],
   theme: {
     extend: {
-      // Here we define our custom design tokens.
+      // Your existing design tokens.
       colors: {
         'background': 'hsl(0 0% 100%)',
         'foreground': 'hsl(0 0% 10%)',
@@ -19,6 +19,17 @@ module.exports = {
         sans: ['-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif'],
         serif: ['Georgia', 'Times New Roman', 'serif'],
       },
+
+      // The new animation block for the scrolling marquee.
+      animation: {
+        scroll: 'scroll 40s linear infinite',
+      },
+      keyframes: {
+        scroll: {
+          '0%': { transform: 'translateX(0)' },
+          '100%': { transform: 'translateX(-50%)' },
+        }
+      }
     },
   },
   plugins: [],

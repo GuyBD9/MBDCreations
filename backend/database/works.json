@@ -1,0 +1,54 @@
+[
+    {
+      "id": 1,
+      "title": "Cork Stool",
+      "slug": "cork-stool",
+      "subtitle": "Compressed Cork Side Table & Stool",
+      "description": "Formed from compressed Portuguese cork, this piece functions as both a sturdy stool and a minimalist side table. Its monolithic shape is softened by subtle brass inlays.",
+      "materials": "Compressed Cork, Brass",
+      "dimensions": "H: 45cm, W: 35cm, D: 35cm",
+      "price": 1650.00,
+      "imageUrl": "/works/Corck.jpg",
+      "is_featured": true,
+      "is_drop": false
+    },
+    {
+      "id": 2,
+      "title": "Magnet Lamp",
+      "slug": "magnet-lamp",
+      "subtitle": "Modular Concrete & Light Tube Lamp",
+      "description": "A study in contrasts. A raw concrete base grounds a delicate, fluted light tube held in place by a single, powerful neodymium magnet. The light can be positioned freely, offering a playful interaction.",
+      "materials": "Cast Concrete, Fluted Acrylic, Neodymium Magnet, LED",
+      "dimensions": "H: 50cm, Base Diameter: 12cm",
+      "price": 2100.00,
+      "imageUrl": "/works/MagnetLamp.jpg",
+      "is_featured": true,
+      "is_drop": false
+    },
+    {
+      "id": 3,
+      "title": "Stone Glass",
+      "slug": "stone-glass",
+      "subtitle": "Hand-blown Glass with Volcanic Stone",
+      "description": "A moment of fusion between two natural elements. Hand-blown glass is shaped around a piece of raw volcanic basalt, creating a unique tactile and visual experience where smooth meets rough.",
+      "materials": "Hand-blown Borosilicate Glass, Basalt",
+      "dimensions": "H: 12cm, Diameter: 9cm",
+      "price": 480.00,
+      "imageUrl": "/works/StoneGlass.jpg",
+      "is_featured": true,
+      "is_drop": false
+    },
+    {
+      "id": 4,
+      "title": "Flower Stand",
+      "slug": "Flower-Stand",
+      "subtitle": "Minimalist Stainless Steel Flower Stand",
+      "description": "Inspired by the Japanese art of flower arranging, this stand isolates each stem in its own polished steel holder. A sculptural piece that celebrates the singular beauty of each flower.",
+      "materials": "Polished Stainless Steel",
+      "dimensions": "H: 25cm, W: 15cm",
+      "price": 620.00,
+      "imageUrl": "/works/Flowerstand.jpg",
+      "is_featured": true,
+      "is_drop": false
+    }
+  ]

@@ -1,18 +1,30 @@
 // backend/services/dbService.js
-import Database from 'better-sqlite3';
+import fs from 'fs';
+import path from 'path';
 
-// Use the correct, consistent database file name and path.
-const db = new Database('./database/main.db');
+// This is the path to our new JSON database.
+const DB_PATH = path.join(process.cwd(), './database/works.json');
 
+// A function to read all the data from the JSON file.
+function readData() {
+  try {
+    const jsonData = fs.readFileSync(DB_PATH, 'utf8');
+    return JSON.parse(jsonData);
+  } catch (error) {
+    console.error("Could not read or parse works.json", error);
+    return []; // Return an empty array on error
+  }
+}
+
+// The service now uses the data from the JSON file.
 export const worksService = {
   getAllWorks: () => {
-    // This will now correctly find the 'works' table.
-    const stmt = db.prepare('SELECT * FROM works ORDER BY created_at DESC');
-    return stmt.all();
+    return readData();
   },
 
   getWorkById: (id) => {
-    const stmt = db.prepare('SELECT * FROM works WHERE id = ?');
-    return stmt.get(id);
+    const works = readData();
+    // Find the work with the matching ID. Note that id from params is a string.
+    return works.find(work => work.id.toString() === id.toString());
   },
 };

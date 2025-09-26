@@ -1,9 +1,15 @@
 // frontend/pages/works.js
 import Head from 'next/head';
 import WorkCard from '../components/WorkCard';
+// We need to import 'dynamic' from Next.js
+import dynamic from 'next/dynamic';
 import { workApiService } from '../services/api';
 
-// This is the React component that renders the page.
+// This is the key change: we are now loading GalleryWrapper dynamically on the client-side only.
+const GalleryWrapper = dynamic(() => import('../components/GalleryWrapper'), {
+  ssr: false, // This ensures the component never runs on the server
+});
+
 export default function WorksPage({ works }) {
   return (
     <>
@@ -11,7 +17,6 @@ export default function WorksPage({ works }) {
         <title>Works - MBDCreations</title>
         <meta name="description" content="Explore the full collection of contemporary design objects." />
       </Head>
-
       <div className="container mx-auto px-4 py-16 sm:px-6 lg:px-8">
         <header className="text-center mb-12">
           <h1 className="text-4xl font-serif tracking-tight">The Collection</h1>
@@ -19,34 +24,31 @@ export default function WorksPage({ works }) {
             Beauty exists in everything – you just need to see it.
           </p>
         </header>
-        
-        {/* Check if the works array exists and has items */}
-        {works && works.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {works.map(work => (
-              <WorkCard key={work.id} work={work} />
-            ))}
-          </div>
-        ) : (
-          // Fallback message if there are no works to display
-          <p className="text-center py-20">The collection is currently being curated.</p>
-        )}
+
+        {/* This will now render correctly */}
+        <GalleryWrapper>
+          {works && works.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+              {works.map(work => <WorkCard key={work.id} work={work} />)}
+            </div>
+          ) : (
+            <p className="text-center py-20">The collection is currently being curated.</p>
+          )}
+        </GalleryWrapper>
+
       </div>
     </>
   );
 }
 
-// This function runs on the server-side to fetch data before the page is rendered.
+// Data fetching remains the same
 export async function getStaticProps() {
-  // Use the new API service we created.
   const works = await workApiService.getAllWorks();
   
   return {
     props: { 
-      // Send an empty array in case of an error to prevent a crash.
-      works: works || [] 
+      works: works || []
     },
-    // Re-generate the page at most once every 60 seconds.
-    revalidate: 60, 
+    revalidate: 60,
   };
 }

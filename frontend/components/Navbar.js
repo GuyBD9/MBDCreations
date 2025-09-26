@@ -3,7 +3,7 @@ import Image from 'next/image';
 
 const links = [
   { href: '/', label: 'Home' },
-  { href: '/Works', label: 'Works' },
+  { href: '/works', label: 'Works' },
   { href: '/drops', label: 'Drops' },
   { href: '/about', label: 'About' },
 ];

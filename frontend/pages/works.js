@@ -1,13 +1,12 @@
 // frontend/pages/works.js
 import Head from 'next/head';
 import WorkCard from '../components/WorkCard';
-// We need to import 'dynamic' from Next.js
 import dynamic from 'next/dynamic';
 import { workApiService } from '../services/api';
 
-// This is the key change: we are now loading GalleryWrapper dynamically on the client-side only.
+// Dynamically import the GalleryWrapper to ensure it only runs on the client-side.
 const GalleryWrapper = dynamic(() => import('../components/GalleryWrapper'), {
-  ssr: false, // This ensures the component never runs on the server
+  ssr: false, 
 });
 
 export default function WorksPage({ works }) {
@@ -25,7 +24,6 @@ export default function WorksPage({ works }) {
           </p>
         </header>
 
-        {/* This will now render correctly */}
         <GalleryWrapper>
           {works && works.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -41,7 +39,7 @@ export default function WorksPage({ works }) {
   );
 }
 
-// Data fetching remains the same
+// Data fetching is correct and remains the same.
 export async function getStaticProps() {
   const works = await workApiService.getAllWorks();
   

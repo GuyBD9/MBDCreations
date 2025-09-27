@@ -1,14 +1,13 @@
 // frontend/tailwind.config.js
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  // This line tells Tailwind to scan all pages and components for class names.
   content: [
     "./pages/**/*.{js,ts,jsx,tsx}",
     "./components/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
     extend: {
-      // Your existing design tokens.
+      // ... your existing theme settings ...
       colors: {
         'background': 'hsl(0 0% 100%)',
         'foreground': 'hsl(0 0% 10%)',
@@ -19,8 +18,6 @@ module.exports = {
         sans: ['-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif'],
         serif: ['Georgia', 'Times New Roman', 'serif'],
       },
-
-      // The new animation block for the scrolling marquee.
       animation: {
         scroll: 'scroll 40s linear infinite',
       },
@@ -32,5 +29,8 @@ module.exports = {
       }
     },
   },
-  plugins: [],
+  // Add the aspect-ratio plugin here
+  plugins: [
+    require('@tailwindcss/aspect-ratio'),
+  ],
 }

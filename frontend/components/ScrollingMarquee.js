@@ -36,6 +36,7 @@ export default function ScrollingMarquee({ works }) {
                 src={work.imageUrl}
                 alt={`Image of ${work.title}`}
                 fill
+                sizes="400px"
                 className="object-cover w-full h-full transition-transform duration-700 ease-in-out group-hover/item:scale-105"
               />
               {/* Optional: Add a title overlay on hover */}

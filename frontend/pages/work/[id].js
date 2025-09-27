@@ -3,10 +3,7 @@ import Head from 'next/head';
 import Image from 'next/image';
 import { workApiService } from '../../services/api';
 
-// This is the component that displays the single work details.
 export default function WorkDetailPage({ work }) {
-  
-  // A fallback for when the page is being generated on-demand.
   if (!work) {
     return <div>Loading...</div>;
   }
@@ -14,14 +11,16 @@ export default function WorkDetailPage({ work }) {
   return (
     <>
       <Head>
-        <title>{work.title} - MBDCreations</title>
-        <meta name="description" content={work.subtitle} />
+        {/* Fixed: Added a fallback to prevent hydration errors */}
+        <title>{work ? work.title : 'Loading Work...'} - MBDCreations</title>
+        
+        {/* Improved: Using the full description for better SEO, with a fallback */}
+        <meta name="description" content={work ? work.description : 'A unique design object from MBDCreations.'} />
       </Head>
 
       <div className="container mx-auto px-4 py-16 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
           
-          {/* Image Column */}
           <div className="aspect-w-3 aspect-h-4 bg-secondary">
             <Image
               src={work.imageUrl}
@@ -32,7 +31,6 @@ export default function WorkDetailPage({ work }) {
             />
           </div>
 
-          {/* Details Column */}
           <div>
             <h1 className="text-4xl font-serif mb-2">{work.title}</h1>
             <p className="text-xl text-foreground/70 mb-6">{work.subtitle}</p>
@@ -59,30 +57,23 @@ export default function WorkDetailPage({ work }) {
   );
 }
 
-// This function tells Next.js which paths (which IDs) to pre-render at build time.
+// This function remains unchanged and is correct.
 export async function getStaticPaths() {
   const works = await workApiService.getAllWorks();
-  
-  // Create an array of paths from the work IDs.
   const paths = works ? works.map((work) => ({
     params: { id: work.id.toString() },
   })) : [];
-
-  // fallback: 'blocking' means if a page doesn't exist, Next.js will generate it on the first request.
   return { paths, fallback: 'blocking' };
 }
 
-// This function fetches the specific data for a single work page.
+// This function remains unchanged and is correct.
 export async function getStaticProps({ params }) {
   const work = await workApiService.getWorkById(params.id);
-
-  // If no work is found, return a 404 page.
   if (!work) {
     return { notFound: true };
   }
-  
   return {
     props: { work },
-    revalidate: 60, // Revalidate the data every 60 seconds
+    revalidate: 60,
   };
 }

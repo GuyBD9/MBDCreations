@@ -1,30 +1,33 @@
 // frontend/components/GalleryWrapper.js
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, memo } from 'react';
 import lightGallery from 'lightgallery';
 import lgThumbnail from 'lg-thumbnail';
 import lgZoom from 'lg-zoom';
 
-// This component wraps our grid and initializes lightGallery.
-export default function GalleryWrapper({ children }) {
+function GalleryWrapper({ children }) {
   const galleryRef = useRef(null);
 
   useEffect(() => {
+    let gallery;
     if (galleryRef.current) {
-      // Initialize lightGallery
-      const gallery = lightGallery(galleryRef.current, {
+      gallery = lightGallery(galleryRef.current, {
         plugins: [lgThumbnail, lgZoom],
         speed: 500,
-        download: false, // Optional: disable the download button
+        download: false,
+        licenseKey: '0000-0000-000-0000', // Add a license key if you have one, otherwise it might show a popup.
       });
-
-      // Cleanup function to destroy the gallery on component unmount
-      return () => {
-        if (gallery) {
-          gallery.destroy();
-        }
-      };
     }
-  }, []); // The empty dependency array ensures this runs only once on mount.
+
+    // Cleanup function to destroy the gallery instance when the component unmounts.
+    return () => {
+      if (gallery) {
+        gallery.destroy();
+      }
+    };
+  }, []); // Empty dependency array ensures this runs only once.
 
   return <div ref={galleryRef}>{children}</div>;
 }
+
+// Using memo to prevent re-renders, which can be useful with external libraries.
+export default memo(GalleryWrapper);
